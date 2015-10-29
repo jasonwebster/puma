@@ -613,9 +613,11 @@ module Puma
             content_length = vs
             next
           when TRANSFER_ENCODING
+            puts "puma debug: transfer-encoding header set by application to `#{vs}`"
             allow_chunked = false
             content_length = nil
           when HIJACK
+            puts "puma debug: hijack header set by application"
             response_hijack = vs
             next
           end
@@ -665,12 +667,14 @@ module Puma
         begin
           res_body.each do |part|
             if chunked
+              puts "puma debug: sending chunked body"
               next if part.bytesize.zero?
               fast_write client, part.bytesize.to_s(16)
               fast_write client, line_ending
               fast_write client, part
               fast_write client, line_ending
             else
+              puts "puma debug: sending unified body"
               fast_write client, part
             end
 
