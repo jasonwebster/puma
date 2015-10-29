@@ -668,6 +668,9 @@ module Puma
           res_body.each do |part|
             if chunked
               puts "puma debug: sending chunked body"
+              puts "puma hyperdebug body part ========="
+              p part
+              puts "puma hyperdebug body part ========="
               next if part.bytesize.zero?
               fast_write client, part.bytesize.to_s(16)
               fast_write client, line_ending
